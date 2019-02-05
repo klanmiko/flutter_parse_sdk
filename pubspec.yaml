@@ -19,3 +19,8 @@ dependencies:
   shared_preferences: ^0.4.3
   path_provider: ^0.4.1
   uuid: ^1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  test: ^1.5.1

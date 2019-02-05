@@ -24,8 +24,6 @@ class ParseFile extends ParseObject {
   @override
   toJson({bool forApiRQ: false}) => <String, String>{'__type': keyFile, 'name': _fileName, 'url': _fileUrl};
 
-  @override
-  String toString() => json.encode(toString());
 
   /// Creates a new file
   ///

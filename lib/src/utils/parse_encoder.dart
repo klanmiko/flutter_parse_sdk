@@ -18,8 +18,8 @@ dynamic parseEncode(dynamic value) {
     }).toList();
   }
 
-  if (value is ParseObject) {
-    return _encodeObject(value);
+  if (value is ParseFile) {
+    return value.toJson();
   }
 
   if (value is ParseUser) {
@@ -27,11 +27,11 @@ dynamic parseEncode(dynamic value) {
   }
 
   if (value is ParseGeoPoint) {
-    return value.toJson;
+    return value.toJson();
   }
 
-  if (value is ParseFile) {
-    return value.toJson;
+  if (value is ParseObject) {
+    return _encodeObject(value);
   }
 
   if (value is Uint8List) {
