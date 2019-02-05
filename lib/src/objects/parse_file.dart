@@ -1,7 +1,6 @@
 part of flutter_parse_sdk;
 
 class ParseFile extends ParseObject {
-
   File _file;
   String _fileName;
   String _fileUrl;
@@ -22,20 +21,22 @@ class ParseFile extends ParseObject {
   bool get saved => url != null;
 
   @override
-  toJson({bool forApiRQ: false}) => <String, String>{'__type': keyFile, 'name': _fileName, 'url': _fileUrl};
+  toJson({bool forApiRQ: false}) =>
+      <String, String>{'__type': keyFile, 'name': _fileName, 'url': _fileUrl};
 
 
   /// Creates a new file
   ///
   /// {https://docs.parseplatform.org/rest/guide/#files/}
-  ParseFile(this._file, {String name, String url, bool debug, ParseHTTPClient client}) : super (keyFile){
+  ParseFile(this._file,
+      {String name, String url, bool debug, ParseHTTPClient client})
+      : super(keyFile) {
     client == null ? _client = ParseHTTPClient() : _client = client;
     _debug = isDebugEnabled(objectLevelDebug: debug);
-    if(_file != null) {
+    if (_file != null) {
       this._fileName = path.basename(_file.path);
       this._path = 'files/$_fileName';
-    }
-    else {
+    } else {
       this._fileName = name;
       this._fileUrl = url;
     }
@@ -44,7 +45,7 @@ class ParseFile extends ParseObject {
   Future<ParseFile> loadStorage() async {
     Directory tempPath = await getTemporaryDirectory();
 
-    if(_fileName == null) {
+    if (_fileName == null) {
       _file = null;
       return this;
     }
@@ -52,10 +53,9 @@ class ParseFile extends ParseObject {
     File possibleFile = new File("${tempPath.path}/$_fileName");
     bool exists = await possibleFile.exists();
 
-    if(exists) {
+    if (exists) {
       _file = possibleFile;
-    }
-    else {
+    } else {
       _file = null;
     }
 
@@ -63,10 +63,10 @@ class ParseFile extends ParseObject {
   }
 
   Future<ParseFile> download() async {
-    if(_fileUrl == null) {
+    if (_fileUrl == null) {
       return this;
     }
-    
+
     Directory tempPath = await getTemporaryDirectory();
     this._file = new File("${tempPath.path}/$_fileName");
     await _file.create();
@@ -91,6 +91,6 @@ class ParseFile extends ParseObject {
     var uri = _client.data.serverUrl + "$_path";
     final body = await _file.readAsBytes();
     final response = await _client.post(uri, headers: headers, body: body);
-    return super.handleResponse<ParseFile>(response, ParseApiRQ.upload);
+    return handleResponse<ParseFile>(this, response, ParseApiRQ.upload, _debug, className);
   }
 }
